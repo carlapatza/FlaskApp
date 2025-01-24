@@ -6,7 +6,7 @@ import pytesseract
 app = Flask(__name__)
 
 # Set the path to the Tesseract executable
-pytesseract.pytesseract.tesseract_cmd = r'C:\Users\patzanov\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 @app.route('/')
 def process_photos():
