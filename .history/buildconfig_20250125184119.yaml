@@ -1,0 +1,28 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: flask-app
+  namespace: carla-patzanovsky-dev
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/carlapatza/FlaskApp.git
+      ref: main
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'flask-app:latest'
+  triggers:
+    - type: GitHub
+      github:
+        secret: <your-webhook-secret>
+    - type: Generic
+      generic:
+        secret: <your-webhook-secret>
+    - type: ConfigChange
+    - type: ImageChange
