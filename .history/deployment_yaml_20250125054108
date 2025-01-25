@@ -1,0 +1,26 @@
+# filepath: /c:/Users/patzanov/Desktop/flask_app/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+  namespace: carla-patzanovsky-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+        - name: flask-app
+          image: 'image-registry.openshift-image-registry.svc:5000/carla-patzanovsky-dev/flask-app:latest'
+          ports:
+            - containerPort: 5000
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL

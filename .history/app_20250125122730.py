@@ -5,15 +5,12 @@ import pytesseract
 import logging
 
 # Set up logging
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
 
 # Set the path to the Tesseract executable
-pytesseract.pytesseract.tesseract_cmd = (
-    r'C:\Users\patzanov\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
-)
+pytesseract.pytesseract.tesseract_cmd = r'C:\Users\patzanov\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
 @app.route('/')
 def process_photos():
@@ -57,7 +54,6 @@ def process_photos():
 
     logging.info(f"App executed. Data saved to: {os.path.abspath(output_file)}")
     return f"App executed. Data saved to: {os.path.abspath(output_file)}"
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
