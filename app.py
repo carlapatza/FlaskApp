@@ -2,6 +2,10 @@ from flask import Flask
 import os
 import cv2
 import pytesseract
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
 
@@ -10,12 +14,13 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\Users\patzanov\AppData\Local\Progra
 
 @app.route('/')
 def process_photos():
-    photos_dir = 'photos'
+    photos_dir = 'Photos'
     output_file = 'output.txt'
     text_data = []
 
     # Ensure the photos directory exists
     if not os.path.exists(photos_dir):
+        logging.error("Photos directory does not exist.")
         return "Photos directory does not exist."
 
     # Read all files in the photos directory
@@ -28,6 +33,7 @@ def process_photos():
 
                 # Check if the image is read correctly
                 if image is None:
+                    logging.warning(f"Could not read image {filename}")
                     text_data.append(f"Could not read image {filename}\n")
                     continue
 
@@ -35,6 +41,7 @@ def process_photos():
                 text = pytesseract.image_to_string(image)
                 text_data.append(f"Text from {filename}:\n{text}\n")
             except Exception as e:
+                logging.error(f"Error processing {filename}: {e}")
                 text_data.append(f"Error processing {filename}: {e}\n")
 
     # Write the extracted text to the output file
@@ -42,8 +49,10 @@ def process_photos():
         with open(output_file, 'w', encoding='utf-8') as f:
             f.writelines(text_data)
     except Exception as e:
+        logging.error(f"Error writing to output file: {e}")
         return f"Error writing to output file: {e}"
 
+    logging.info(f"App executed. Data saved to: {os.path.abspath(output_file)}")
     return f"App executed. Data saved to: {os.path.abspath(output_file)}"
 
 if __name__ == '__main__':
